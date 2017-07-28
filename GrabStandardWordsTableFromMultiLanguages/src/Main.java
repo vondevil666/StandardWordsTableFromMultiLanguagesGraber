@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         Main main=new Main();
         main.setStandardExcelPath("StandardPatternEnglish-200.xlsx");
-        main.setTargetExcelPath("Jahai(Bur2005)-1773W.xlsx","B");
+        main.setTargetExcelPath("Alak(The2001)-663.xlsx","B");
         main.startMainStream();
     }
 
@@ -21,16 +21,14 @@ public class Main {
         ArrayList<String> targetList = ExcelReader.readExcel(targetExcelPath, targetEnglishVolumeNumber);
         ArrayList<ArrayList<String>> standardDataWeNeedList=ExcelReader.getStandardDataWeNeedList();
         ArrayList<String> targetDataWeNeedList=ExcelReader.getTargetDataWeNeedList();
-        System.out.println("standardList.size(): "+standardList.size());
-        System.out.println("targetList.size(): "+targetList.size());
-        System.out.println("standardDataWeNeedList.size(): "+standardDataWeNeedList.size());
-        System.out.println("targetDataWeNeedList.size(): "+targetDataWeNeedList.size());
+
         for (int i=0;i<standardList.size();i++) {
             for(int j=0;j<targetList.size();j++) {
-                String[] currentUnsplitedArray=targetList.get(j).split(",");    //目标表中未拆分的英语词数组
-                for(String currentSplitedString:currentUnsplitedArray){
-                    if(currentSplitedString.contains("("))continue;
-                    if(standardList.get(i).contains(currentSplitedString)){
+                String[] currentSplitedArray=targetList.get(j).split(",|，");    //目标表中未拆分的英语词数组
+                for(String singleSplitedString:currentSplitedArray){
+                    if(singleSplitedString.length()==0)continue;
+                    if(standardList.get(i).contains(singleSplitedString.trim())){
+//                        if(standardList.get(i).contains("black")) System.out.println(singleSplitedString);
                         standardDataWeNeedList.get(i).add(targetDataWeNeedList.get(j));
                         break;
                     }
